@@ -20,8 +20,8 @@ def create_folders_structure(input_dir, output_dir):
             print(f"Created: {output_path}")
 
 # Example usage
-input_directory = r"C:\Users\Behza\Downloads\TELEPROJECT" # Replace with your input directory path
-output_directory = r"C:\Users\Behza\Desktop\TELEPROJECT"  # Replace with your output directory path
+input_directory = # input directory path
+output_directory =  # output directory path
 
 # Create the folder structure in the output directory
 create_folders_structure(input_directory, output_directory)
