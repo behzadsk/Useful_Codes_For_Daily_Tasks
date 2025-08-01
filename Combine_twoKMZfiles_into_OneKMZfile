@@ -1,0 +1,73 @@
+import os
+import zipfile
+import shutil
+
+# Function to process each KMZ file
+def process_kmz(input_dir, kmz_path):
+    output_dir = os.path.join(input_dir, "temp_extracted")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Step 1: Extract the KMZ File
+    with zipfile.ZipFile(kmz_path, 'r') as zip_ref:
+        zip_ref.extractall(output_dir)
+    
+    # Step 2: Modify the KML file to include the logo
+    kml_file = None
+    for root, dirs, files in os.walk(output_dir):
+        for file in files:
+            if file.endswith(".kml"):
+                kml_file = os.path.join(root, file)
+                break
+    
+    if kml_file:
+        with open(kml_file, 'r') as file:
+            kml_content = file.read()
+        
+        # Adding ScreenOverlay for the logo before the closing </Document> tag
+        screen_overlay = """
+        <ScreenOverlay>
+            <name>Teleproject</name>
+            <Icon>
+                <href>https://www.teleproject.it/static/img/logos/teleproject_white.png</href>
+            </Icon>
+            <overlayXY x="0" y="1" xunits="fraction" yunits="fraction" />
+            <screenXY x="0.01" y="0.99" xunits="fraction" yunits="fraction" />
+            <rotationXY x="0" y="0" xunits="fraction" yunits="fraction" />
+            <size x="376" y="61.75" xunits="pixels" yunits="pixels" />
+        </ScreenOverlay>
+        """
+        
+        new_kml_content = kml_content.replace('</Document>', screen_overlay + '</Document>')
+        
+        with open(kml_file, 'w') as file:
+            file.write(new_kml_content)
+    
+    # Step 3: Repackage the KMZ file with maximum compression
+    base_name = os.path.basename(kmz_path)
+    new_kmz_path = os.path.join(input_dir, base_name)
+    with zipfile.ZipFile(new_kmz_path, 'w', zipfile.ZIP_DEFLATED) as kmz:
+        for root, dirs, files in os.walk(output_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, output_dir)
+                kmz.write(file_path, arcname=arcname)
+    
+    # Clean up the extracted directory
+    shutil.rmtree(output_dir)
+    print(f"Processed {kmz_path} -> {new_kmz_path}")
+
+# Function to search and process all KMZ files in a directory and its subdirectories
+def process_all_kmz_files(root_dir):
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        for file_name in filenames:
+            if file_name.endswith(".kmz"):
+                kmz_file_path = os.path.join(dirpath, file_name)
+                process_kmz(dirpath, kmz_file_path)
+
+# Main Function
+if __name__ == "__main__":
+    # Update this with your root directory path
+    root_dir = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT"
+    
+    # Process all KMZ files in the directory and subdirectories
+    process_all_kmz_files(root_dir)
