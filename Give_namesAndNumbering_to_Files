@@ -1,0 +1,36 @@
+import os
+
+def rename_files_with_sequence(folder_path, file_extension, start_number, prefix=""):
+    print(f"Starting to rename all '{file_extension}' files in '{folder_path}' from number {start_number} with prefix '{prefix}'...\n")
+
+    files = [f for f in os.listdir(folder_path) if f.lower().endswith(file_extension.lower())]
+    files.sort()
+
+    if not files:
+        print(f"No files with extension '{file_extension}' found in the folder.")
+        return
+
+    number = start_number
+
+    for filename in files:
+        old_path = os.path.join(folder_path, filename)
+        new_filename = f"{prefix} ({number}){file_extension}"  # <-- Note the space and parentheses
+        new_path = os.path.join(folder_path, new_filename)
+
+        if os.path.exists(new_path):
+            print(f"Skipping rename for '{filename}' because '{new_filename}' already exists.")
+        else:
+            os.rename(old_path, new_path)
+            print(f"Renamed '{filename}' to '{new_filename}'")
+
+        number += 1
+
+    print(f"\nRenaming complete. {len(files)} files renamed starting from {start_number}.")
+
+if __name__ == "__main__":
+    folder = # Give Path of your folder
+    ext = ".enw" # Mention Datatype extension
+    start_num = # Give numebring to start from for files in Folder
+    prefix = # Any Name that you want to give before the numbers of files
+
+    rename_files_with_sequence(folder, ext, start_num, prefix)
