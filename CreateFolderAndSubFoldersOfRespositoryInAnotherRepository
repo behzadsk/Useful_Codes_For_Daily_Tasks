@@ -1,0 +1,27 @@
+import os
+
+def create_folders_structure(input_dir, output_dir):
+    """
+    Replicate the folder and subfolder structure of the input directory into the output directory.
+    
+    :param input_dir: Path to the input directory
+    :param output_dir: Path to the output directory where the folder structure should be replicated
+    """
+    for root, dirs, files in os.walk(input_dir):
+        # Determine the relative path from the input directory
+        relative_path = os.path.relpath(root, input_dir)
+        
+        # Create the corresponding directory in the output directory
+        output_path = os.path.join(output_dir, relative_path)
+        
+        # Create the directory if it doesn't exist
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+            print(f"Created: {output_path}")
+
+# Example usage
+input_directory = r"C:\Users\Behza\Downloads\TELEPROJECT" # Replace with your input directory path
+output_directory = r"C:\Users\Behza\Desktop\TELEPROJECT"  # Replace with your output directory path
+
+# Create the folder structure in the output directory
+create_folders_structure(input_directory, output_directory)
