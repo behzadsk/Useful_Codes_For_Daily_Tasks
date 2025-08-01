@@ -48,9 +48,9 @@ def combine_kml_files(original_kml_path, logo_url, output_kml_path):
     print(f"Combined KML created at {output_kml_path}")
 
 # Example usage
-original_kml_path = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT\KML\ASPI\RECCO-SAVONA\RECCO-SAVONA-WIND.kml"
-logo_url = 'https://www.teleproject.it/static/img/logos/teleproject_white.png'
-output_kml_path = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT\KML\ASPI\RECCO-SAVONA\RECCO-SAVONA KMLs with Logo\RECCO-SAVONA-WIND.kml"
+original_kml_path = Give path of your file (KML)
+logo_url = #Logo You want to insert
+output_kml_path =  #Give Path for your output file
 
 # Combine the original KML and the logo into a new KML file
 combine_kml_files(original_kml_path, logo_url, output_kml_path)
