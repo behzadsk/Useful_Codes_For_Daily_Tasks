@@ -44,7 +44,7 @@ def convert_kmz_to_kml(kmz_file_path, output_dir):
 
 
 # here you will give the input file path to be processed.
-directory_path = r"C:\Users\Behza\Desktop\TELEPROJECT" # Replace with your directory path
+directory_path = # Give Path of your directory
 
 
 
