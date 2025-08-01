@@ -1,0 +1,34 @@
+import os
+import pandas as pd
+
+def convert_xls_to_xlsx_in_folder(folder_path):
+    # Check if the folder exists
+    if not os.path.isdir(folder_path):
+        print(f"The folder {folder_path} does not exist.")
+        return
+    
+    # Loop through all files in the folder
+    for filename in os.listdir(folder_path):
+        # Get the full path of the file
+        file_path = os.path.join(folder_path, filename)
+        
+        # Proceed if the file has the .xls extension
+        if os.path.isfile(file_path) and filename.endswith('.xls'):
+            new_file_path = os.path.splitext(file_path)[0] + '.xlsx'
+            
+            try:
+                # Read the .xls file using pandas
+                df = pd.read_excel(file_path, engine='xlrd')
+                
+                # Write the data to a new .xlsx file
+                df.to_excel(new_file_path, index=False, engine='openpyxl')
+                
+                print(f"Converted {file_path} to {new_file_path}")
+            except Exception as e:
+                print(f"Error converting {file_path}: {e}")
+        else:
+            print(f"Skipping {file_path}, it does not have the .xls extension.")
+
+# Example usage
+folder_path = r"D:\Research\BS Thesis\Climate change impact on Glaciers in HKH chitral\Tables and Charts Data\Data for Rainfall Runoff\Excel Files"  # Replace with the actual folder path
+convert_xls_to_xlsx_in_folder(folder_path)
