@@ -1,0 +1,19 @@
+# Define the file paths
+file_path = 
+
+# Define the find and replace terms
+find_text = "R&S"
+replace_text = "TELEPROJECT"
+
+# Read the file
+with open(file_path, 'r', encoding='utf-8') as file:
+    file_contents = file.read()
+
+# Perform the find and replace
+new_contents = file_contents.replace(find_text, replace_text)
+
+# Save the modified content back to the file
+with open(file_path, 'w', encoding='utf-8') as file:
+    file.write(new_contents)
+
+print(f"Replaced all occurrences of '{find_text}' with '{replace_text}' in {file_path}")
