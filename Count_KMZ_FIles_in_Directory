@@ -1,0 +1,55 @@
+
+# Importing necessary libararies.
+
+import mimetypes  # To determine the file type based on the file extension
+import os  # For file and directory handling
+import zipfile  # To unzip KMZ files and extract KML files
+import xml.etree.ElementTree as ET  # To parse and modify KML files (XML format)
+
+
+# this function counts number of files which have KMZ datatype.
+
+def count_kmz_files(directory):
+    """Count the number of .kmz files in a directory and its subdirectories."""
+    kmz_count = 0
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.lower().endswith('.kmz'):
+                kmz_count += 1
+    return kmz_count
+
+# in this function i will convert all KMZ data type files. if any other datatype is found it will leave that file.
+
+
+def convert_kmz_to_kml(kmz_file_path, output_dir):
+    """Convert KMZ file to KML by extracting the KML content."""
+    # Extract the base name of the KMZ file to use for the KML file
+    file_name = os.path.splitext(os.path.basename(kmz_file_path))[0]
+    
+    # Define the path for the output KML file
+    kml_file_path = os.path.join(output_dir, f"{file_name}.kml")
+    
+    # Open the KMZ file as a ZIP archive
+    with zipfile.ZipFile(kmz_file_path, 'r') as kmz:
+        # Extract the KML file from the archive
+        for file in kmz.namelist():
+            if file.endswith('.kml'):
+                with kmz.open(file) as kml_file:
+                    with open(kml_file_path, 'wb') as output_file:
+                        output_file.write(kml_file.read())
+                break
+    
+    return kml_file_path
+
+
+
+# here you will give the input file path to be processed.
+directory_path = r"C:\Users\Behza\Desktop\TELEPROJECT" # Replace with your directory path
+
+
+
+# Here it will implement the Counting of KMZ files function.
+
+kmz_count = count_kmz_files(directory_path)
+print(f"Number of .kmz files in the directory and subdirectories: {kmz_count}")
+
