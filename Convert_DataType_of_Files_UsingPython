@@ -30,5 +30,5 @@ def convert_xls_to_xlsx_in_folder(folder_path):
             print(f"Skipping {file_path}, it does not have the .xls extension.")
 
 # Example usage
-folder_path = r"D:\Research\BS Thesis\Climate change impact on Glaciers in HKH chitral\Tables and Charts Data\Data for Rainfall Runoff\Excel Files"  # Replace with the actual folder path
+folder_path = # Path for your files
 convert_xls_to_xlsx_in_folder(folder_path)
