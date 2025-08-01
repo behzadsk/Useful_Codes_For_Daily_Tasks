@@ -67,7 +67,7 @@ def process_all_kmz_files(root_dir):
 # Main Function
 if __name__ == "__main__":
     # Update this with your root directory path
-    root_dir = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT"
+    root_dir = # Give path of your directory
     
     # Process all KMZ files in the directory and subdirectories
     process_all_kmz_files(root_dir)
