@@ -1,0 +1,44 @@
+import os
+import pandas as pd
+
+# Folder containing Excel files
+folder_path =
+output_file = 
+
+# List to store dataframes
+dfs = []
+
+# Read all Excel files in the folder
+for file in os.listdir(folder_path):
+    file_path = os.path.join(folder_path, file)
+
+    # Extract Date (Month & Year) from filename (assuming format like "crb_airtemp_apr2000.xlsx")
+    filename = os.path.splitext(file)[0]  # Remove .xls or .xlsx
+    date_str = filename.split("_")[-1]  # Extract last part (e.g., "apr2000")
+
+    if file.endswith(".xlsx"):  # New Excel format
+        df = pd.read_excel(file_path, engine="openpyxl")
+    elif file.endswith(".xls"):  # Old Excel format
+        df = pd.read_excel(file_path, engine="xlrd")
+    else:
+        continue  # Skip non-Excel files
+
+    # If "date" column already exists, drop it
+    if "date" in df.columns:
+        df = df.drop(columns=["date"])
+
+    # Insert Date column at the correct position
+    df.insert(1, "date", date_str)  # Insert date after GRIDCODE
+
+    # Append dataframe to list
+    dfs.append(df)
+
+# Combine all dataframes
+if dfs:
+    merged_df = pd.concat(dfs, ignore_index=True)  # Stack data vertically
+
+    # Save to Excel
+    merged_df.to_excel(output_file, index=False, engine="openpyxl")
+    print(f" Merged file saved as: {output_file}")
+else:
+    print(" No Excel files found in the folder.")
