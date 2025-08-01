@@ -1,0 +1,56 @@
+import xml.etree.ElementTree as ET
+
+def combine_kml_files(original_kml_path, logo_url, output_kml_path):
+    # Parse the original KML file
+    tree = ET.parse(original_kml_path)
+    root = tree.getroot()
+
+    # Create a new root element for the combined KML file
+    new_kml = ET.Element('kml', xmlns="http://www.opengis.net/kml/2.2")
+    
+    # Create a new Document element
+    new_document = ET.SubElement(new_kml, 'Document')
+
+    # Import the content of the original KML into the new Document
+    for element in list(root):
+        new_document.append(element)
+
+    # Create the ScreenOverlay element for the logo
+    screen_overlay = ET.SubElement(new_document, 'ScreenOverlay')
+    
+    name = ET.SubElement(screen_overlay, 'name')
+    name.text = "Teleproject Logo"
+
+    icon = ET.SubElement(screen_overlay, 'Icon')
+    href = ET.SubElement(icon, 'href')
+    href.text = logo_url
+
+    # Position the logo at the bottom center of the screen
+    overlay_xy = ET.SubElement(screen_overlay, 'overlayXY', {
+        'x': "0.5", 'y': "0", 'xunits': "fraction", 'yunits': "fraction"
+    })
+
+    screen_xy = ET.SubElement(screen_overlay, 'screenXY', {
+        'x': "0.5", 'y': "0.01", 'xunits': "fraction", 'yunits': "fraction"
+    })
+
+    rotation_xy = ET.SubElement(screen_overlay, 'rotationXY', {
+        'x': "0", 'y': "0", 'xunits': "fraction", 'yunits': "fraction"
+    })
+
+    size = ET.SubElement(screen_overlay, 'size', {
+        'x': "0.3", 'y': "0.1", 'xunits': "fraction", 'yunits': "fraction"
+    })
+
+    # Write the new KML content to the output file
+    new_tree = ET.ElementTree(new_kml)
+    new_tree.write(output_kml_path, encoding='utf-8', xml_declaration=True)
+    print(f"Combined KML created at {output_kml_path}")
+
+# Example usage
+original_kml_path = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT\KML\ASPI\RECCO-SAVONA\RECCO-SAVONA-WIND.kml"
+logo_url = 'https://www.teleproject.it/static/img/logos/teleproject_white.png'
+output_kml_path = r"C:\Users\Behza\Desktop\TELEPROJECT\TELEPROJECT\KML\ASPI\RECCO-SAVONA\RECCO-SAVONA KMLs with Logo\RECCO-SAVONA-WIND.kml"
+
+# Combine the original KML and the logo into a new KML file
+combine_kml_files(original_kml_path, logo_url, output_kml_path)
